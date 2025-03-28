@@ -1,68 +1,133 @@
-# Koii Task Template
+# Backend Service for Task Node Application
 
-## Development Guide
+## Project Overview
 
-First time writing a task? Start with the [Development Guide](https://github.com/koii-network/ezsandbox).
+This is a Node.js backend service designed for distributed task processing using the Koii Network's namespace wrapper. The application provides a flexible task execution framework with built-in support for task submission, auditing, and distribution.
 
-## Task Flow
+### Key Features
+- Dynamic task execution framework
+- Integrated with Koii Network's blockchain infrastructure
+- Supports custom task logic implementation
+- Provides sample API endpoints for task state and value retrieval
+- Containerized deployment support
 
-Tasks operate within a periodic structure known as 'rounds'. Each round consists of the following steps:
+## Getting Started
 
-1. **Perform the Task:** Execute the necessary actions for the round.
-2. **Audit Work:** Review the work completed by other nodes.
-3. **Rewards and Penalties:** Distribute rewards and apply penalties as necessary.
+### Prerequisites
+- Node.js (v16+ recommended)
+- Yarn package manager
+- Docker (optional, for containerized deployment)
 
-For more detailed information about the task flow, refer to [the runtime flow documentation](https://docs.koii.network/concepts/what-are-tasks/what-are-tasks/gradual-consensus).
+### Installation
 
-Looking to bring better structure to your task? Explore our [Task Organizer](https://www.figma.com/community/file/1220194939977550205/Task-Outline) for better organization.
-
-## Tips
-
-- Always ensure your secret files, such as `.env` files, are secure! Implement a robust `.gitignore` strategy.
-- Continue innovating with Koii!
-
-Should you encounter any issues, don't hesitate to reach out by opening a ticket on [Discord](https://discord.gg/koii-network).
-
-## Environment Requirements
-
-- [Node >=16.0.0](https://nodejs.org)
-- [Docker Compose](https://docs.docker.com/get-started/08_using_compose/)
-
-## Tool Requirements
-
-- [Koii CLI Suite](https://docs.koii.network/develop/command-line-tool/koii-cli/install-cli)
-- [Create Task CLI](https://docs.koii.network/develop/command-line-tool/create-task-cli/install)
-
-## Available Scripts
-
-```sh
-npm test
-````
-
-Simulate rounds using unitTest.js.
-
-```sh
-npm jest-test
-````
-
-Runs tests using Just.
-
-```sh
-npm run webpack
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd js_app_deploy
 ```
 
-Builds the project and generates the main script: `dist/main.js`.
-
-```sh
-npm run prod-debug
+2. Install dependencies:
+```bash
+yarn install
 ```
 
-Runs the live debugger (must have the task running in the desktop node).
+3. Copy and configure environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your specific configuration
+```
 
-## Runtime Options
+### Running the Service
 
-There are two ways to run your task during development:
+#### Development Mode
+```bash
+yarn start  # Starts the server
+yarn prod-debug  # Starts with nodemon for live reloading
+```
 
-1. With `GLOBAL_TIMERS="true"` (refer to `.env.local.example`) - When this option is enabled, IPC calls are made by calculating the average time slots of all tasks running on your node.
+#### Testing
+```bash
+yarn test  # Runs unit tests
+yarn jest-test  # Runs Jest tests
+```
 
-2. With `GLOBAL_TIMERS="false"` - This option allows for manual calls to K2 and disables the automatic triggers for round management on K2. Transactions are only accepted during the correct time period. Instructions for manual calls can be found in `index.js`.
+## API Documentation
+
+### Available Endpoints
+
+#### 1. Get Task State
+- **Method**: GET
+- **Path**: `/taskState`
+- **Description**: Retrieves the current task state
+- **Response**: 
+  ```json
+  {
+    "taskState": { /* Task state object */ }
+  }
+  ```
+
+#### 2. Get Stored Value
+- **Method**: GET
+- **Path**: `/value`
+- **Description**: Retrieves a value stored in NeDB
+- **Response**:
+  ```json
+  {
+    "value": "Stored value"
+  }
+  ```
+
+## Authentication
+
+This service uses Koii Network's namespace wrapper for authentication and access control. Authentication is managed through the network's built-in mechanisms.
+
+## Project Structure
+
+```
+.
+├── index.js           # Main application entry point
+├── coreLogic.js       # Core task processing logic
+├── task/              # Task-specific modules
+│   ├── audit.js
+│   ├── distribution.js
+│   └── submission.js
+├── helper/            # Helper utility functions
+└── tests/             # Test suites
+```
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- Koii Namespace Wrapper
+- Web3.js
+- Webpack
+- Jest (Testing)
+- Puppeteer (Optional browser automation)
+
+## Deployment
+
+### Docker Deployment
+```bash
+docker-compose up -d
+```
+
+### Environment Considerations
+- Ensure proper configuration of `.env` file
+- Set `TIMERS` environment variable to control task execution timers
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the ISC License. See `LICENSE` for more information.
+
+## Contact
+
+For more information, please contact the Koii Network team.
